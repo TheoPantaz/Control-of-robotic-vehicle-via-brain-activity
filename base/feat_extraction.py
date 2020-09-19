@@ -129,24 +129,11 @@ class Feature_Extraction:
         
         if data.ndim == 2:
             data = data.reshape((-1,data.shape[1],data.shape[0]))
-        if filters.ndim == 1:
-            filters = filters.reshape((-1,filters.shape[0]))
-            
         
-        features = []
-        tr_features = []
-
-        
-        for trial in data:
-            CSPfeat = filters @ trial
-            CSPfeat = np.log(np.var(CSPfeat, axis = 1))
-            features += [CSPfeat]
-            # for filt in filters:
-            #     CSPfeat = filt @ trial    #Implementation of CSP
-            #     tr_features.append(np.log(np.var(CSPfeat)))
-            # features += [tr_features]
-            # tr_features=[]
-        
+        # print(filters.shape)
+        data = data.transpose(0,2,1)
+        CSPfeat = data @ filters
+        features = np.log(np.var(CSPfeat, axis = 1))
         return features
     
     
